@@ -1,0 +1,20 @@
+.targetas{   
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content:space-between;
+	
+}
+.targeta{
+  padding: 10px;
+
+}
+
+.imagen{
+	padding-bottom: 5px;
+}
+
+img{
+	height: 350px;
+}

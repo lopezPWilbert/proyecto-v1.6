@@ -1,0 +1,53 @@
+﻿{% extends "app/base.html" %}
+
+
+{% block content %}
+	<h1 class="mt-5 pt-5"> perfil {{perfil}}</h1>
+
+{% for a in perfil %}
+	<li>{{a.user_id}}</li>
+{% endfor %}
+	
+{% for x in ctx %}
+<p>{{x.username}}</p>
+{% endfor %}
+
+<h5>Editar perfil </h5>
+
+{% for x in ctx  %}
+<h5>Borrar {{x.id}} {{pk}} </h5>
+
+	{% for account in user.socialaccount_set.all %}
+	<p>dasd{{account.provider}}</p>
+	{% if account.provider %}		
+		{% ifequal account.provider "facebook" %}
+			<a href="{% url 'registrarPerfil_view' pk=x.id %}">Registrar Perfil (Entro con facebook)</a>
+		{%else%}
+			{% ifequal account.provider "google" %}
+				<a href="{% url 'registrarPerfil_view' pk=x.id %}">Registrar Perfil (Entro con Google)</a>
+			{%else%}
+					{% ifequal account.provider "twitter" %}
+						<a href="{% url 'registrarPerfil_view' pk=x.id %}">Registrar Perfil (Entro con twitter)</a>
+					{% endifequal %}
+			{% endifequal %}
+		{% endifequal %}
+
+		{% else %}
+		<h1>NO entro con ninguna red social</h1>
+	{% endif %}
+	
+	
+{% endfor %} 
+
+{% endfor %}
+	
+<h4>Cuenta de&emsp;&emsp;: </h4>
+
+
+	
+
+<h2>Publicaciones Recientes</h2>
+<p>MOstrar 3</p>
+
+{% endblock content %}
+	

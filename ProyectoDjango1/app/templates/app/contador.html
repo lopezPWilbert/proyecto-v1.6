@@ -1,0 +1,9 @@
+﻿{% extends "app/base.html" %}
+
+
+{% block content %}
+
+{% for x in object_list %}
+    <p>{{ forloop.counter + 10 }}</p>
+{%endfor%}
+{% endblock content %}

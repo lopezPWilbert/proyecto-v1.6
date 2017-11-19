@@ -1,0 +1,345 @@
+﻿{% extends "app/base.html" %}
+
+{% block estilos %}
+<style>
+		.foot{
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			background: #34495e !important;
+
+		}
+
+		.cabecera{
+			background: #34495e !important;
+		}
+		      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+	   #map {
+		height: 90%;
+		width: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+	  }
+
+
+	.fm-nav a {
+		color: #fff;
+		padding: 15px;
+	}
+
+	.fm-nav .active, .fm-nav a:hover  {
+		background: rgba(255,255,255,.1);
+	}
+
+	/*LAteral*/
+	@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+	html,
+	body {
+	  width: 100%;
+	  height: 100%;
+	}
+	body {
+	  font-family: 'Open Sans', sans-serif;
+	  font-weight: 400;
+	  /*background: #1a4856;*/
+	}
+	.aside-mobile {
+	  width: 220px;
+	  position: fixed;
+	  box-sizing: border-box;
+	  padding: 10px 0;
+	  height: 100%;
+	  top: 0;
+	  left: -220px;
+	  z-index: 2;
+	  background: #3a3a3a;
+	  display: block;
+	  transition: all .3s ease;
+	  -webkit-transition: all .2s ease;
+	  -moz-transition: all .2s ease;
+	  -o-transition: all .2s ease;
+	}
+	.aside-mobile .cont-scroll {
+	  width: 100%;
+	  height: 100%;
+	  overflow-y: auto;
+	}
+	.aside-mobile h2 {
+	  color: #0f9;
+	  font-size: 35px;
+	  padding: 0 0 0 20px;
+	  line-height: 100%;
+	  margin: 5px 0;
+	}
+	.aside-mobile ul {
+	  display: block;
+	  box-sizing: border-box;
+	  padding: 0 0 0 20px;
+	}
+	.aside-mobile ul li {
+	  display: block;
+	}
+	.aside-mobile ul li a {
+	  display: block;
+	  text-align: left;
+	  font-size: 13px;
+	  color: #0f9;
+	  text-transform: uppercase;
+	  padding: 5px 0;
+	  text-decoration: none;
+	  cursor: pionter;
+	  transition: all .3s ease;
+	  -webkit-transition: all .3s ease;
+	  -moz-transition: all .3s ease;
+	  -o-transition: all .3s ease;
+	}
+	.aside-mobile ul li a:hover {
+	  color: #9f0;
+	}
+	.aside-mobile .ico-seccion {
+	  width: 24px;
+	  height: 60px;
+	  overflow: hidden;
+	  position: absolute;
+	  top: 0;
+	  bottom: 0;
+	  right: -24px;
+	  z-index: 2;
+	  margin: auto;
+	  transition: all .3s ease;
+	  -webkit-transition: all .3s ease;
+	  -moz-transition: all .3s ease;
+	  -o-transition: all .3s ease;
+	  transform-origin: 0% 50%;
+	  -webkit-transform-origin: 0% 50%;
+	  -moz-transform-origin: 0% 50%;
+	  -ms-transform-origin: 0% 50%;
+	  -o-transform-origin: 0% 50%;
+	}
+	.aside-mobile .ico-seccion:hover {
+	  transform: scale(1.2);
+	}
+	.aside-mobile .ico-seccion .circulo {
+	  width: 50px;
+	  height: 50px;
+	  border-radius: 50%;
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  cursor: pointer;
+	  background: #f7a700;
+	}
+	.aside-mobile #btn-menu-lateral {
+	  width: 20px;
+	  height: 100%;
+	  position: absolute;
+	  top: 0;
+	  right: -20px;
+	}
+	.contenido {
+	  width: 100%;
+	  height: 100%;
+	  position: relative;
+	  float: left;
+	}
+	.indicaciones {
+	  width: 100%;
+	  height: 40px;
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  bottom: 0;
+	  left: 0;
+	  margin: auto;
+	  color: #fff;
+	  text-align: center;
+	  font-weight: 700;
+	  font-size: 30px;
+	}
+	
+</style>
+{% endblock estilos %}
+
+{% block content %}
+<div id="map" class="container-fluid pt-5 mt-5">
+ 	<div class="row"></div>
+</div>
+
+
+	<aside id="menu-lateral" class="aside-mobile">
+		<div class="cont-scroll">
+            <br />
+            <br />
+            <br />
+		   <h2>MENÚ</h2>
+	 
+		   <ul>
+			  <li><a href="/filtro/1/">Retenes</a></li>
+			  <li><a href="/filtro/2/" class="actual">Baches</a></li>
+			  <li><a href="/filtro/3/">Accidentes</a></li>
+			  <li><a href="/filtro/4/">Reparaciones</a></li>
+			  <li><a href="/filtro/5/">Eventos</a></li>
+              <li><a href="/filtro/6/">Otros</a></li>
+		   </ul>
+		   <div class="ico-seccion">
+			  <div class="circulo salud"></div>
+		   </div>
+		   <div id="btn-menu-lateral"></div>
+		</div>
+	 </aside>
+
+	 
+
+   
+	<script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script type="text/javascript">
+        function initMap()
+        {
+        
+
+	  var contenido = [
+        {% for x in object_list %}
+        ['<div id="content"><div id="siteNotice"></div><h1 id="firstHeading" class="firstHeading">{{x.titulo}}</h1><div id="bodyContent"><pre>{{x.descripcion}}</pre><p><a href="{% url "noticia_view" pk=x.id %}">Ver mas</a></p></div></div>'],
+        {% endfor %}
+        ];
+	  
+    var locations = [
+        {% for x in object_list %}
+        [contenido[{{ forloop.counter }} -1].toString(),{{x.latitud}},{{x.longitud}},{{x.id}}],
+        {% endfor %}
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: new google.maps.LatLng(32.514981,-117.034670),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map,
+        flat:true
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+	}
+	}
+	//lATERAL
+	// MENÚ LATERAL
+// ------------
+function MenuLateral(){
+	var dis     = this;
+	dis.menu    = document.getElementById('menu-lateral');
+	dis.btn     = document.getElementById('btn-menu-lateral');
+	// Determino si puedo hacer touch o no.
+	dis.touchsi = 'ontouchstart' in window;
+	// Variables para guardar eventos.
+	dis.empieza;
+	dis.mientras;
+	dis.termina;
+	dis.moviendo = false;
+	dis.puntoPartida;
+	dis.movido;
+	dis.pos;
+	dis.abierto = false;
+ 
+	// Pregunto si soporta touch para mobile y asigno los eventos a las variables.
+	if (dis.touchsi) {
+		dis.empieza  = 'touchstart';
+		dis.mientras = 'touchmove';
+		dis.termina  = 'touchend';
+	}else{
+		dis.empieza  = 'mousedown';
+		dis.mientras = 'mousemove';
+		dis.termina  = 'mouseup';
+	}
+
+	// Comienzo 
+	dis.menu.addEventListener(dis.empieza, function(event){
+      event.preventDefault;
+		// Le digo que se está moviendo.
+		dis.moviendo = true;
+
+		// Si tiene touch uso este, si no el click.
+		if (dis.touchsi) {
+			// console.log('punto de partida '+event.touches[0].clientX);
+			dis.puntoPartida = event.touches[0].clientX;
+			// console.log('pos inicial '+dis.menu.offsetLeft);
+			dis.pos = dis.menu.offsetLeft * -1;
+		}else{
+			// console.log('punto de partida '+event.touches[0].clientX);
+			dis.puntoPartida = event.clientX;
+			// console.log('pos inicial '+dis.menu.offsetLeft);
+			dis.pos = dis.menu.offsetLeft * -1;
+      }
+
+	});
+	
+	document.addEventListener(dis.mientras, function(event){
+      event.preventDefault();
+
+		if(dis.moviendo){
+
+			if(dis.touchsi){
+				dis.movido = event.touches[0].clientX - dis.puntoPartida;
+				console.log('movido: '+dis.movido);
+
+			}else{
+				dis.movido = event.clientX - dis.puntoPartida;
+				console.log('movido: '+dis.movido);
+         }
+
+			dis.menu.style.left = (dis.movido - dis.pos)+'px';
+		}else{
+
+      }
+	});
+
+	document.addEventListener(dis.termina, function(event){
+		dis.moviendo = false;
+      event.preventDefault();
+		//if(dis.touchsi){
+
+			if(dis.movido > 50){
+				dis.menu.style.left = 0+'px';
+				dis.abierto  = true;
+
+			}else if(dis.movido < -50){
+				dis.menu.style.left = -220+'px';
+				dis.abierto = false;
+			}else{
+				if(dis.abierto){
+					dis.menu.style.left = 0+'px';
+				}else{
+					dis.menu.style.left = -220+'px';
+				}
+			}
+	});
+}
+if (document.getElementById('menu-lateral') != null) {
+	var lateral = new MenuLateral();
+}
+  </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnLARYSFHB2Rg34l6r-fP7b9SiKeVxJ38&callback=initMap"
+        type="text/javascript"></script>
+{% endblock content %}
+
+
+

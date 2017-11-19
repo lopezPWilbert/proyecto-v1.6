@@ -1,0 +1,106 @@
+﻿{% extends "app/base.html" %}
+{% block estilos %}
+<style>
+		.foot{
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			background: #34495e !important;
+
+		}
+
+		.cabecera{
+			background: #34495e !important;
+		}
+		.perfil{
+			border-radius: 50%;
+		}
+</style>
+{% endblock estilos %}
+{% block content %}
+{% load staticfiles %}
+<div class="container mt-5 pt-5">
+	<div class="row">
+		<div class="col-6">
+			<!-- DATOS DEL USUARIO -->
+			{% for b in ctx  %}
+				<p class="h2">Usuario: {{b.username}}</p>
+				
+				{% if b.first_name %}
+					<p class="h2">Nombre: {{b.first_name}}</p>
+				{% endif %}
+
+				{% if b.last_name %}
+					<p class="h2">Apellido: {{b.last_name}}</p>
+				{% endif %}
+
+				{% if b.email %}
+					<p class="h2">Correo: {{b.email}}</p>
+				{% endif %}
+				<p>{{b.id}}</p>
+					
+			{% endfor %}
+			
+		</div> 
+		<div class="col-6">
+			<!-- {% for a in ctx2  %}
+				
+				{% if desicion %}
+					{% if a.Avatar %}
+						<img class="perfil" src="{{a.Avatar.url}}" width="300px" height="300px">
+					
+					{% else %}
+						<img class="perfil" src="{% static 'app/img/noavatar.png' %}" width="300px" height="300px" alt="Imagen aleatoria">
+						
+					{% endif %}
+					
+					{% else %}
+						<img class="perfil" src="{% static 'app/img/noavatar.png' %}" width="300px" height="300px" alt="Imagen aleatoria">
+				{% endif %}
+
+			{% endfor %}
+			 -->
+		</div>
+	</div>
+</div>
+
+
+<!-- {% for b in ctx  %}
+
+	
+	{% ifequal user.id b.id  %}
+		{% if desicion %}
+		
+			{% for x in ctx2 %}
+				<a href="{% url 'actualizarPerfil_view' pk=x.id %}">Actualizar</a>
+			{% endfor %} 
+			
+		{%else%}
+
+			<a href="{% url 'registrarPerfil_view' %}">Registrar</a> 
+		{% endif %}
+	{% endifequal %}
+		
+{% endfor %}
+ -->
+<!-- 
+<h2>Denuncias realizadas</h2>
+{% for a in ctx  %}
+	
+	{% for b in ctx3 %}
+		
+		{% ifequal a.id b.user_id %}
+			<p>{{b.titulo}}</p>
+			
+		{% endifequal %}
+				
+		
+	{% endfor %}
+		
+	
+{% endfor %}
+ -->
+{% endblock content %}
+	

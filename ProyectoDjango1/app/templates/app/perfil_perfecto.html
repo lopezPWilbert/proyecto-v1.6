@@ -1,0 +1,39 @@
+﻿{% extends "app/base.html" %}
+
+
+{% block content %}
+	<h1 class="mt-5 pt-5"> user:id {{user.id}} </h1>
+	<h2>pk {{pk}}</h2>
+	<h2>Desicion {{desicion}}</h2>
+{{ctx}}
+{% for a in ctx %}
+	<li>auth_user id de ctx:  {{a.username}}</li>
+{% endfor %}
+
+{% for b in ctx2  %}
+	<li>Usuario_m id_nombre de ctx:  {{b.Nombre_id}}</li>
+{% endfor %}
+	
+
+<p>-----------------{{desicion}}-------{{a}}--------------------------</p>
+{% if desicion %}
+	<h1>Esta registrado en authUser y Usuario_m <strong>Actualizar</strong></h1>
+	{% for x in ctx2 %}
+	<a href="{% url 'actualizarPerfil_view' pk=x.id %}">Actualizar</a>
+{% endfor %} 
+
+		
+{%else%}
+
+	<h1>No esta registrado <strong>RegisTrar</strong></h1>
+	<a href="{% url 'registrarPerfil_view' %}">Registrar</a> 
+	{% endif %}
+
+<p>---------------------------------------</p>
+	<p><h4>Cuenta de&emsp;&emsp;: <strong style="text-transform:capitalize;">{{user.socialaccount_set.all.0.provider}}</strong></h4>	
+	
+
+
+
+{% endblock content %}
+	

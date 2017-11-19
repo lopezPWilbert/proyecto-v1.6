@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load staticfiles %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Document {% endblock titulo %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+	<style type="text/css">
+		.signup-slide {
+  			background-color: #ec7063;
+  			-webkit-transition: background-color 1s;
+  			transition: background-color 1s;
+		}
+
+		.login-slide {
+		background-color: #58d68d;
+		-webkit-transition: background-color 1s;
+		transition: background-color 1s;
+				}
+
+		.container {
+		width: 100%;
+		height: auto;
+		}
+		.container .form-group {
+		border-radius: 10px;
+		padding: 30px;
+		background-color: rgba(0, 0, 0, 0.3);
+		width: 330px;
+		margin: auto;
+		top: 50%;
+		left: 50%;
+		position: absolute;
+		-webkit-transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
+		}
+		.container .form-group .btn-group {
+		margin-bottom: 5px;
+		width: 100%;
+		}
+		.container .form-group .btn-group .login-btn, .container .form-group .btn-group .signup-btn {
+		display: inline-block;
+		margin: 0 5px;
+		padding: 10px 15px !important;
+		text-shadow: 1px 1px #95a5a6;
+		cursor: pointer;
+		}
+		.container .form-group .btn-group .signup-btn {
+		background-color: #e74c3c !important;
+		box-shadow: 0.2em 0.2em #c0392b !important;
+		}
+		.container .form-group .btn-group .signup-btn:hover {
+		background-color: #c0392b !important;
+		box-shadow: 0.2em 0.2em #a2352a !important;
+		}
+		.container .form-group input, .container .form-group .login-option {
+		display: block;
+		padding: 5px 10px;
+		margin: 15px 0;
+		width: 100%;
+		border-radius: 2px;
+		background-color: rgba(0, 0, 0, 0.5);
+		border: 0;
+		color: #fff;
+		font-weight: lighter;
+		box-sizing: border-box;
+		}
+		.container .form-group input::-webkit-input-placeholder, .container .form-group .login-option::-webkit-input-placeholder {
+		color: #abebc6;
+		text-shadow: 2px 2px #333;
+		}
+		.container .form-group input::-moz-placeholder, .container .form-group .login-option::-moz-placeholder {
+		color: #abebc6;
+		text-shadow: 2px 2px #333;
+		}
+		.container .form-group input:-moz-placeholder, .container .form-group .login-option:-moz-placeholder {
+		color: #abebc6;
+		text-shadow: 2px 2px #333;
+		}
+		.container .form-group input:-ms-input-placeholder, .container .form-group .login-option:-ms-input-placeholder {
+		color: #abebc6;
+		text-shadow: 2px 2px #333;
+		}
+		.container .form-group button, .container .form-group .btn-group .login-btn, .container .form-group .btn-group .signup-btn {
+		padding: 10px;
+		border-radius: 5px;
+		border: 0;
+		color: #fff;
+		font-weight: lighter;
+		text-transform: uppercase;
+		background-color: #2ecc71;
+		box-shadow: 0.2em 0.2em #27ae60;
+		-webkit-transition: all 0.5s;
+		transition: all 0.5s;
+		}
+		.container .form-group button:active, .container .form-group .btn-group .login-btn:active, .container .form-group .btn-group .signup-btn:active {
+		position: relative;
+		top: -2px;
+		}
+		.container .form-group button:hover, .container .form-group .btn-group .login-btn:hover, .container .form-group .btn-group .signup-btn:hover {
+		background-color: #27ae60;
+		box-shadow: 0.2em 0.2em #208f4f;
+		-webkit-transition: all 0.5s;
+		transition: all 0.5s;
+		}
+
+		.title-label {
+		width: 100%;
+		color: #fff;
+		padding: 5px;
+		text-align: center;
+		font-weight: bold;
+		box-sizing: border-box;
+		margin: 20px 0 0;
+		}
+
+		.bg-login {
+		background-color: #2ecc71;
+		}
+
+		.bg-register {
+		background-color: #e74c3c;
+		}
+
+		/*#################33*/
+		.login-box{
+			position:relative;
+			margin: 10px auto;
+			width: 500px;
+			height: 380px;
+			background-color: #fff;
+			padding: 10px;
+			border-radius: 3px;
+			-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+		-moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+		box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+		}
+		
+		.social-login{ 
+			margin-top: 15px;
+			display: flex;
+			width: 100%;
+			height:auto;
+			padding: 0px 0 15px 0;
+			
+		}
+		.social-login a{
+			text-decoration: none;
+			color: #fff;
+			border: 1px solid rgba(0,0,0,0.05);
+			padding: 12px;
+			border-radius: 2px;
+			font-size: 12px;
+			text-transform: uppercase;
+			margin: 0 3%;
+			text-align:center;
+		}
+
+		.facebook{
+			background-color: #49639F;
+		}
+		.google{
+			background-color: #DF4A32;
+		}
+
+		.twitter{
+			background-color: #4099ff;
+		}
+
+
+
+
+		#video_background { 
+			position: absolute; 
+			bottom: 0px; 
+			right: 0px; 
+			min-width: 100%; 
+			min-height: 100%; 
+			width: auto; 
+			height: auto; 
+			z-index: -1000; 
+			overflow: hidden; 
+		}
+		#video_pattern { 
+			background:#fff; 
+			position: fixed; 
+			opacity: 0.8; 
+			left: 0px; 
+			top: 0px; 
+			width: 100%; 
+			height: 100%; 
+			z-index: 1; 
+		}
+
+		.enviar{
+			width: 100%;
+		}
+
+		.log{
+			width: 80px;
+		}
+		.linea{
+			margin-top: 25px;
+			border: solid 1px  white ;
+		}
+		
+  
+	</style>
+ 
+</head>
+
+<body>
+	<video autoplay="autoplay" loop="loop" id="video_background" preload="auto" />
+		<source src="{% static 'app/videos/calle.webm'%}" type="video/mp4" />
+	</video/>
+	
+	
+<div class="container bg-slide">
+  <div class="form-group">
+    <div class="btn-group">
+      <button class="signup-btn">Registrarme</button>
+      <button class="login-btn">Ingresar</button>
+	</div>
+	
+
+    <form class="register-form" id="signup_form" method="POST" enctype="multipart/form-data" action="/accounts/signup/">
+	  {% csrf_token %}  
+      <input class="form-control" type="text" placeholder="Nombre de Usuario" required="required"  name="username" id="id_username"/>
+      <input class="form-control" type="email" placeholder="Correo Electronico" required="required" name="email" id="id_email"/>
+      <input class="form-control" type="password" placeholder="Contraseña" required="required" name="password1" id="id_password1" />
+	  <input class="form-control" type="password" placeholder="Repita la  Contraseña" required="required" name="password2" id="id_password2" />
+	 <button class="btn-submit enviar" type="submit">Registrarme</button>
+	 <div class="linea"></div>
+	 <div class="title-label bg-register">&nbsp;Registrate con </div>
+	 <div class="social-login">
+	   <a href="/accounts/google/login/?process=login" class="google log">
+		 <i class="fa fa-google-plus fa-lg"></i>
+	   </a>
+
+	   <a href="/accounts/facebook/login/?process=login" class="facebook log">
+		   <i class="fa fa-facebook fa-lg facebook"></i>
+		 </a>
+
+		 <a href="/accounts/twitter/login/?process=login" class="twitter log">
+		   <i class="fa fa-twitter fa-lg twitter"></i>
+		 </a>
+	 </div>
+	</form>
+	
+
+
+
+    <form class="secure-login" method="POST">
+	  {% csrf_token %}  
+      <input class="form-control" type="text" placeholder="Usuario" required="required" id="id_login" name="login"/>
+	  <input class="form-control" type="Password" placeholder="Contraseña" required="required"  name="password" id="id_password" />
+	  <button class="btn-submit enviar" type="submit">Iniciar</button>
+	  <div class="linea"></div>
+	  <div class="title-label bg-register">&nbsp;Inicia sesion con </div>
+	  <div class="social-login">
+		<a href="/accounts/google/login/?process=login" class="google log">
+		  <i class="fa fa-google-plus fa-lg"></i>
+		</a>
+
+		<a href="/accounts/facebook/login/?process=login" class="facebook log">
+			<i class="fa fa-facebook fa-lg facebook"></i>
+		  </a>
+
+		  <a href="/accounts/twitter/login/?process=login" class="twitter log">
+			<i class="fa fa-twitter fa-lg twitter"></i>
+		  </a>
+	  </div>
+    </form>
+  </div>
+</div>
+ 
+    <script src="{% static 'app/scripts/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'app/scripts/popper.min.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+
+    <script type="text/javascript">
+    	$(document).ready(function(){
+  $('.signup-btn').click(function(){
+    $('.register-form').show('slow');
+    $('.secure-login').hide('slow');
+    $('body').removeClass().addClass('signup-slide');
+  });
+  //default dispaly
+   $('.signup-btn').trigger('click');
+  
+  $('.login-btn').click(function(){
+    $('.secure-login').show('slow');
+    $('.register-form').hide('slow');
+    $('body').removeClass().addClass('login-slide');
+  });
+});
+    </script>
+
+
+</body>
+</html>

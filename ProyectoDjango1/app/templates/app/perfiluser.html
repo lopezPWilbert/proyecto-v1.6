@@ -1,0 +1,78 @@
+﻿{% extends "app/base.html" %}
+{% block estilos %}
+{% load staticfiles %}
+<style>
+		.foot{
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			background: #34495e !important;
+
+		}
+
+		.cabecera{
+			background: #34495e !important;
+		}
+		.perfil{
+			border-radius: 50%;
+		}
+</style>
+{% endblock estilos %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+	<div class="row">
+		<div class="col-6">
+			<h1>Perfil usuario</h1>
+			<p>Usuario {{user.username}}</p>
+			
+			
+				
+			
+			{% if user.firts_name %}
+				<p>Nombre {{user.firts_name}}</p>				
+			{% endif %}
+			
+			{% if user.last_name %}
+				<p>Apellido {{user.last_name}}</p>
+			{% endif %}
+					
+			
+			{% if user.email %}
+				<p>Correo {{user.email}}</p>	
+			{% endif %}
+			{% for v in actualizar %}
+				<a href="{% url 'actualizarPerfil_view' pk=v.id %}">Actualizar mis datos</a>
+			{% endfor %}
+
+			
+			
+			
+								
+		</div>
+		<div class="col-6">
+			
+			{% for a in ctx %}
+				{% if a.Avatar %}
+					
+					{% ifequal a.Avatar 'None' %}
+						<img class="perfil" src="{% static 'app/img/noavatar.png' %}" width="300px" height="300px" alt="Imagen aleatoria">
+					{% else %}
+						<img class="perfil" src="{{a.Avatar.url}}" width="300px" height="300px"/>
+					{% endifequal %}
+						
+		
+				{% else %}
+					<img class="perfil" src="{% static 'app/img/noavatar.png' %}" width="300px" height="300px" alt="Imagen aleatoria">
+			
+				{% endif %}
+
+			{% endfor %}
+				
+		</div>
+	</div>
+</div>
+{% endblock content %}
+	

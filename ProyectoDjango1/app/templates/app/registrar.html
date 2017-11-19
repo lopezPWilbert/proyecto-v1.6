@@ -1,0 +1,31 @@
+﻿{% extends "app/base.html" %}
+
+
+{% block content %}
+
+<div class="container mt-5 pt-5">
+	<div class="row">
+		<div class="col">
+			<form method="POST" class="form-control" enctype="multipart/form-data">
+				{% csrf_token %}
+				 
+				<p>
+					<label for="id_Nombre">Nombre:</label> 
+					<select name="Nombre" required id="id_Nombre" >
+						<option value="1">{{user.username}}</option>
+					</select>
+				</p>
+				  <p><label for="id_Telefono">Telefono:</label> <input type="number" name="Telefono" id="id_Telefono" /></p>
+
+				  <p><label for="id_Direccion">Direccion:</label> <input type="text" name="Direccion" id="id_Direccion" maxlength="100" /></p>
+				  
+				  <p><label for="id_Avatar">Avatar:</label> <input type="file" name="Avatar" id="id_Avatar" /></p>
+
+				 <input type="submit" value="Actualizar">
+				 <input type="reset" value="Cancel">
+			</form>	
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
