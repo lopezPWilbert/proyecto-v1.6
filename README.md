@@ -16,6 +16,7 @@ programacion web
 1.5 Fusion con formulario triple 
 1.5.1.1 Formulario triple se le agregan 2 campos, todo funciona bien, incluso sin meter video.
 1.6 Filtros de denuncias en proceso
+1.6.1 Filtros listos
 	Falta validar formulario triple
 	Agregar varias formularios a la vez
 	Agregar decorador de login aceptado
