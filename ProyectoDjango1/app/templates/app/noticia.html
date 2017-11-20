@@ -113,10 +113,30 @@
 					  <span class="sr-only">Next</span>
 					</a>
 				</div>
-			
+			<!--Inicia 1.6.2 Votos-->
 			<div class="col-12 mt-5">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if x == 1 or ninguno == False %}
+                        <input type="submit" value="Contra" name="contra"/>
+                        <input type="submit" value="Favor" name="favor" />
+                    {% else %}
+                    {% if x == 2 or favor == True %}
+                        <input type="submit" value="Contra" name="contra" />
+                        <input type="submit" value="Favor" name="favor" disabled/>
+                    {% endif %}
+                    {% if x == 3 or favor == False %}
+                        <input type="submit" value="Contra" name="contra" disabled/>
+                        <input type="submit" value="Favor" name="favor" />
+                    {% endif %}
+                    {% endif %}
+                    
+
+                </form>
+                
 				<p class="h5">{{x.descripcion}}</p>
 			</div>
+            <!--Fin  1.6.2 Votos-->
 			<div class="col-12 mt-5">
 					<form method = "POST" class="form_comentarios d-flex justify-content-end flex-wrap">
 						{% csrf_token %} 

@@ -15,7 +15,7 @@ from allauth.account.models import *
 from allauth.socialaccount.models import SocialAccount
 
 from django.db import connection,transaction
-
+from django.contrib.auth.models import User
 
 @login_required(login_url=reverse_lazy('account_login'), redirect_field_name=None)
 def Denuncia(request):
@@ -73,11 +73,65 @@ def Noticia(request,pk):
 				#denuncia=pk
 				comentario = form.cleaned_data.get("comentario")
 				form.save()
+	#1.6.1 Likes, rangos
 
-	return render(request,'app/noticia.html',{'ctx':ctx,'ctx2':ctx2,'ctx3':ctx3,'ctx4':ctx4,'ctx5':ctx5,'form':form,'pk':pk})
+	x,ninguno,favor,ob_favor, ob_contra=consultaVotos(request, pk)
 
+	favor_form=Favor_f(request.POST or None)
+	contra_form=Contra_f(request.POST or None)
+	if request.method == "POST":
+		user = User.objects.get(id=request.user.id)
 
+		if 'favor' in request.POST:
+			if favor_form.is_valid():
+				if not ob_contra:
+					f=favor_form.save(commit=False)
+					f.denuncia_id=pk
+					f.usuario_id=request.user.id
+					f.save()
+				else:
+					Contra_m.objects.filter(usuario=request.user.id, denuncia=pk).delete() 
+					f=favor_form.save(commit=False)
+					f.denuncia_id=pk
+					f.usuario_id=request.user.id
+					f.save()
+		if 'contra' in request.POST:
+			if contra_form.is_valid():
+				if not ob_favor:
 
+					c=contra_form.save(commit=False)
+					c.denuncia_id=pk
+					c.usuario_id=request.user.id
+					c.save()
+				else:
+					Favor_m.objects.filter(usuario=request.user.id, denuncia=pk).delete()
+					c=contra_form.save(commit=False)
+					c.denuncia_id=pk
+					c.usuario_id=request.user.id
+					c.save()
+	x,ninguno,favor,ob_favor, ob_contra=consultaVotos(request, pk)
+    #fin 1.6.2
+	return render(request,'app/noticia.html',{'ctx':ctx,'ctx2':ctx2,'ctx3':ctx3,'ctx4':ctx4,'ctx5':ctx5,'form':form,'pk':pk, 'favor':favor_form, 'contra':contra_form, 'x':x, 'ninguno':ninguno, 'favor':favor})
+#1.6.2 Votos
+def consultaVotos(request, pk):
+	ob_favor=Favor_m.objects.filter(usuario=request.user.id, denuncia=pk)
+	ob_contra=Contra_m.objects.filter(usuario=request.user.id, denuncia=pk)
+	ninguno=True
+	favor=True
+	if not  ob_favor and not ob_contra:
+		x=1
+		ninguno=False
+	else:
+		if not ob_contra:
+			if ob_favor[0].usuario_id == request.user.id:
+				x=2
+				favor=True
+		else:
+			if ob_contra[0].usuario_id == request.user.id:
+				x=3
+				favor=False
+	return x,ninguno, favor, ob_favor, ob_contra
+#Fin 1.6.2
 def PerfilUser(request):
 	ctx=Usuario_m.objects.raw("select * from app_usuario_m o where o.Nombre_id='%s'"%(request.user.id))
 	actualizar=Usuario_m.objects.filter(Nombre_id=request.user.id)

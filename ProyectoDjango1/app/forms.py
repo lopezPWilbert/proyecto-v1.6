@@ -60,3 +60,13 @@ class Comentario_form(forms.ModelForm):
 			'comentario'
 		]
 		
+#1.6.1 Likes,rangos...
+class Favor_f(forms.ModelForm):
+    class Meta:
+        model=Favor_m
+        fields='__all__'
+class Contra_f(forms.ModelForm):
+    class Meta:
+        model=Contra_m
+        fields='__all__'
+#fin 1.6.1
