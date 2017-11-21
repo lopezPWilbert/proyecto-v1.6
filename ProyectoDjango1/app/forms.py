@@ -70,3 +70,9 @@ class Contra_f(forms.ModelForm):
         model=Contra_m
         fields='__all__'
 #fin 1.6.1
+#1.6.3 Reportes
+class Reportados_f(forms.ModelForm):
+	class Meta:
+		model=Reportados_m
+		fields='__all__'
+#Fin 1.6.3

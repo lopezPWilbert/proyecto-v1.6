@@ -18,7 +18,7 @@ class Usuario_m(models.Model):
 
 
 
- 
+
 class Denuncia_m(models.Model):
 	user=models.ForeignKey(User)
 	titulo=models.CharField(max_length=50)

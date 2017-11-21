@@ -115,6 +115,9 @@
 				</div>
 			<!--Inicia 1.6.2 Votos-->
 			<div class="col-12 mt-5">
+                <!--1.6.3 reputacion-->
+                Reputaci&oacute;n: {{nivel}}%
+                <!--Fin 1.6.3-->
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% if x == 1 or ninguno == False %}
@@ -133,7 +136,19 @@
                     
 
                 </form>
-                
+                <!--Fin 1.6.2-->
+                <!--Inicia 1.6.3 reportes-->
+                Reportar
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if reportado == True %}
+                    <input type="submit" value="Reportar" name="reportar" disabled />
+                    {% endif %}
+                    {% if reportado == False %}
+                    <input type="submit" value="Reportar" name="reportar" />
+                    {% endif %}
+                </form>
+                <!--Fin 1.6.3-->
 				<p class="h5">{{x.descripcion}}</p>
 			</div>
             <!--Fin  1.6.2 Votos-->

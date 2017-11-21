@@ -73,12 +73,19 @@ def Noticia(request,pk):
 				#denuncia=pk
 				comentario = form.cleaned_data.get("comentario")
 				form.save()
+
+	#1.6.3 Reportes
+	reputacion(request, pk)
+	#fin reportes
 	#1.6.1 Likes, rangos
 
-	x,ninguno,favor,ob_favor, ob_contra=consultaVotos(request, pk)
+	x,ninguno,favor,ob_favor, ob_contra, reportado=consultaVotos(request, pk)
 
 	favor_form=Favor_f(request.POST or None)
 	contra_form=Contra_f(request.POST or None)
+	#1.6.3 Reportes
+	reportes_form=Reportados_f(request.POST or None)
+	#Fin 1.6.3
 	if request.method == "POST":
 		user = User.objects.get(id=request.user.id)
 
@@ -109,15 +116,28 @@ def Noticia(request,pk):
 					c.denuncia_id=pk
 					c.usuario_id=request.user.id
 					c.save()
-	x,ninguno,favor,ob_favor, ob_contra=consultaVotos(request, pk)
+		if 'reportar' in request.POST:
+			if reportes_form.is_valid():
+				r=reportes_form.save(commit=False)
+				r.denuncia_id=pk
+				r.usuario_id=request.user.id
+				r.save()
+	x,ninguno,favor,ob_favor, ob_contra, reportado=consultaVotos(request, pk)
     #fin 1.6.2
-	return render(request,'app/noticia.html',{'ctx':ctx,'ctx2':ctx2,'ctx3':ctx3,'ctx4':ctx4,'ctx5':ctx5,'form':form,'pk':pk, 'favor':favor_form, 'contra':contra_form, 'x':x, 'ninguno':ninguno, 'favor':favor})
+	#1.6.3 Reportes
+	nivel=reputacion(request, pk)
+	#fin reportes
+	return render(request,'app/noticia.html',{'ctx':ctx,'ctx2':ctx2,'ctx3':ctx3,'ctx4':ctx4,'ctx5':ctx5,'form':form,'pk':pk, 'favor_f':favor_form, 'contra_f':contra_form, 'x':x, 'ninguno':ninguno, 'favor':favor, 'reportado':reportado, 'reportes_f':reportes_form,'nivel':nivel})
 #1.6.2 Votos
 def consultaVotos(request, pk):
+	#1.6.3 Reportes
+	ob_reportes=Reportados_m.objects.filter(usuario=request.user.id, denuncia=pk)
+	#fin 1.6.3
 	ob_favor=Favor_m.objects.filter(usuario=request.user.id, denuncia=pk)
 	ob_contra=Contra_m.objects.filter(usuario=request.user.id, denuncia=pk)
 	ninguno=True
 	favor=True
+	reportado=False
 	if not  ob_favor and not ob_contra:
 		x=1
 		ninguno=False
@@ -130,8 +150,25 @@ def consultaVotos(request, pk):
 			if ob_contra[0].usuario_id == request.user.id:
 				x=3
 				favor=False
-	return x,ninguno, favor, ob_favor, ob_contra
+	if not ob_reportes:
+		reportado=False
+	elif ob_reportes[0].usuario_id == request.user.id:
+		reportado=True
+		
+	return x,ninguno, favor, ob_favor, ob_contra, reportado
 #Fin 1.6.2
+#1.6.3 Reportes
+def reputacion(request, pk):
+	usuario_reportado=Denuncia_m.objects.filter(id=pk)
+	usuario_r_id=usuario_reportado[0].user_id
+	buenos=Favor_m.objects.filter(denuncia__user=usuario_r_id).count()
+	malos_contra=Contra_m.objects.filter(denuncia__user=usuario_r_id).count()
+	malos_reportados=Reportados_m.objects.filter(denuncia__user=usuario_r_id).count()
+	malos=malos_contra+(malos_reportados*10)
+
+	nivel=buenos*100/(malos+buenos)
+	return nivel
+#fin 1.6.3
 def PerfilUser(request):
 	ctx=Usuario_m.objects.raw("select * from app_usuario_m o where o.Nombre_id='%s'"%(request.user.id))
 	actualizar=Usuario_m.objects.filter(Nombre_id=request.user.id)
